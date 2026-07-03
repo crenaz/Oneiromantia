@@ -28,3 +28,6 @@ Respond with valid JSON only. Example:
 }
         """,
     )
+
+
+agent = make_pattern_analyst()

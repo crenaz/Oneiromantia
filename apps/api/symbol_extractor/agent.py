@@ -29,3 +29,6 @@ Always respond with valid JSON only. No prose. Example:
         # tools=[] — this agent reasons only; no tool calls needed.
         # It receives MCP context via the orchestrator's context-loading step.
     )
+
+
+agent = make_symbol_extractor()

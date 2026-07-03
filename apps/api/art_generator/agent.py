@@ -13,3 +13,6 @@ def make_art_generator() -> Agent:
         description="Translates a symbol graph into a procedural p5.js sketch.",
         instruction=ART_GENERATOR_INSTRUCTION,
     )
+
+
+agent = make_art_generator()

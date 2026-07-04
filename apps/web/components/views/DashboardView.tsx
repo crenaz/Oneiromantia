@@ -17,7 +17,10 @@ import {
   Zap,
   Activity,
   User,
-  ExternalLink
+  ExternalLink,
+  Droplet,
+  Waves,
+  Cat
 } from 'lucide-react';
 
 interface DashboardViewProps {
@@ -188,9 +191,10 @@ export function DashboardView({ onNavigate, onOpenArtworkDetail }: DashboardView
                 return (
                   <div key={idx} className="flex items-center gap-4 group cursor-pointer" onClick={() => onNavigate('Symbol Library')}>
                     <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center border border-white/5 group-hover:border-[#7c3aed]/50 transition-colors">
-                      <span className="material-symbols-outlined text-lg text-[#ccc3d8] group-hover:text-[#d2bbff]">
-                        {idx === 0 ? 'dark_mode' : idx === 1 ? 'water' : idx === 2 ? 'visibility' : 'pets'}
-                      </span>
+                      {(() => {
+                        const IconComponent = idx === 0 ? Moon : idx === 1 ? Waves : idx === 2 ? Eye : Cat;
+                        return <IconComponent className="w-5 h-5 text-[#ccc3d8] group-hover:text-[#d2bbff]" />;
+                      })()}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-sans font-medium text-white group-hover:text-[#22d3ee] transition-colors truncate">

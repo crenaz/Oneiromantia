@@ -20,7 +20,10 @@ import {
   CheckCircle,
   Menu,
   Heart,
-  ChevronRight
+  ChevronRight,
+  Waves,
+  Bolt,
+  Cloud
 } from 'lucide-react';
 
 export function JournalView() {
@@ -308,20 +311,21 @@ export function JournalView() {
           <label className="text-xs font-mono text-[#ccc3d8]/60 uppercase tracking-wider block">Dream Mood Signature</label>
           <div className="flex flex-wrap gap-2.5">
             {[
-              { name: 'Wonder', icon: 'auto_awesome', color: 'border-[#7c3aed] bg-[#7c3aed]/10 text-[#d2bbff] glow-violet' },
-              { name: 'Eerie', icon: 'explore', color: 'border-[#ec4899] bg-[#ec4899]/10 text-[#f9bd22]' },
-              { name: 'Calm', icon: 'waves', color: 'border-[#22d3ee] bg-[#22d3ee]/10 text-[#adc6ff]' },
-              { name: 'Chaos', icon: 'bolt', color: 'border-red-500 bg-red-500/10 text-red-300' },
-              { name: 'Vague', icon: 'cloud', color: 'border-[#958da1] bg-[#958da1]/10 text-[#e5e1e4]' }
+              { name: 'Wonder', icon: Sparkles, color: 'border-[#7c3aed] bg-[#7c3aed]/10 text-[#d2bbff] glow-violet' },
+              { name: 'Eerie', icon: Compass, color: 'border-[#ec4899] bg-[#ec4899]/10 text-[#f9bd22]' },
+              { name: 'Calm', icon: Waves, color: 'border-[#22d3ee] bg-[#22d3ee]/10 text-[#adc6ff]' },
+              { name: 'Chaos', icon: Bolt, color: 'border-red-500 bg-red-500/10 text-red-300' },
+              { name: 'Vague', icon: Cloud, color: 'border-[#958da1] bg-[#958da1]/10 text-[#e5e1e4]' }
             ].map((m) => {
               const isActive = mood === m.name;
+              const Icon = m.icon;
               return (
                 <button
                   key={m.name}
                   onClick={() => setMood(m.name as any)}
                   className={`flex flex-col items-center justify-center gap-1 px-5 py-3.5 rounded-xl border transition-all duration-300 cursor-pointer min-w-[76px] ${isActive ? m.color : 'border-white/5 bg-white/[0.01] text-[#ccc3d8]/70 hover:border-[#22d3ee]/40 hover:bg-[#22d3ee]/5'}`}
                 >
-                  <span className="material-symbols-outlined text-2xl">{m.icon}</span>
+                  <Icon className="w-5 h-5 mb-1" />
                   <span className="text-[10px] font-mono font-medium">{m.name}</span>
                 </button>
               );

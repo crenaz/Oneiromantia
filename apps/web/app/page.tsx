@@ -37,7 +37,16 @@ import {
   X,
   Plus,
   Play,
-  HeartHandshake
+  HeartHandshake,
+  // Imported for sidebar:
+  Book,
+  BookOpen,
+  TrendingUp,
+  Network,
+  Palette,
+  Terminal,
+  Brain,
+  Settings
 } from 'lucide-react';
 
 // Main Inner SPA Layout
@@ -46,7 +55,7 @@ function OneiroAppContent() {
   const [activeTab, setActiveTab] = React.useState<string>('Dashboard');
   const [sidebarOpen, setSidebarOpen] = React.useState<boolean>(true);
   const [activityPanelOpen, setActivityPanelOpen] = React.useState<boolean>(true);
-  
+
   // Search global state
   const [globalSearchOpen, setGlobalSearchOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -55,23 +64,23 @@ function OneiroAppContent() {
   const [selectedArtworkDream, setSelectedArtworkDream] = React.useState<Dream | null>(null);
 
   const sidebarItems = [
-    { name: 'Dashboard', icon: 'dashboard', color: 'text-[#d2bbff]' },
-    { name: 'Journal', icon: 'book', color: 'text-[#adc6ff]' },
-    { name: 'Symbol Library', icon: 'menu_book', color: 'text-[#f9bd22]' },
-    { name: 'Archetype Explorer', icon: 'theater_comedy', color: 'text-[#d2bbff]' },
-    { name: 'Emotional Timeline', icon: 'timeline', color: 'text-[#22d3ee]' },
-    { name: 'Pattern Network', icon: 'hub', color: 'text-[#22d3ee]' },
-    { name: 'Gallery', icon: 'palette', color: 'text-[#adc6ff]' },
-    { name: 'Agent Console', icon: 'terminal', color: 'text-[#ec4899]' },
-    { name: 'AI Insights', icon: 'insights', color: 'text-[#22c55e]' },
-    { name: 'Settings', icon: 'settings', color: 'text-[#ccc3d8]' }
+    { name: 'Dashboard', icon: Sparkles, color: 'text-[#d2bbff]' },
+    { name: 'Journal', icon: Book, color: 'text-[#adc6ff]' },
+    { name: 'Symbol Library', icon: BookOpen, color: 'text-[#f9bd22]' },
+    { name: 'Archetype Explorer', icon: Compass, color: 'text-[#d2bbff]' },
+    { name: 'Emotional Timeline', icon: TrendingUp, color: 'text-[#22d3ee]' },
+    { name: 'Pattern Network', icon: Network, color: 'text-[#22d3ee]' },
+    { name: 'Gallery', icon: Palette, color: 'text-[#adc6ff]' },
+    { name: 'Agent Console', icon: Terminal, color: 'text-[#ec4899]' },
+    { name: 'AI Insights', icon: Brain, color: 'text-[#22c55e]' },
+    { name: 'Settings', icon: Settings, color: 'text-[#ccc3d8]' }
   ];
 
   // Map search matching
   const searchResults = React.useMemo(() => {
     if (!searchQuery.trim()) return [];
-    return dreams.filter(d => 
-      d.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    return dreams.filter(d =>
+      d.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       d.text.toLowerCase().includes(searchQuery.toLowerCase()) ||
       d.mood.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -82,10 +91,10 @@ function OneiroAppContent() {
       {/* Background Ambient Glows */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#6366f1]/15 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#a78bfa]/10 rounded-full blur-[150px] pointer-events-none"></div>
-      
+
       {/* 1. TOP NAVIGATION */}
       <header className="sticky top-0 z-40 w-full bg-black/40 backdrop-blur-md h-16 flex items-center justify-between px-6 border-b border-white/5">
-        
+
         {/* Left Side: Logo and togglers */}
         <div className="flex items-center gap-4">
           <button
@@ -95,7 +104,7 @@ function OneiroAppContent() {
           >
             <Menu className="w-4 h-4" />
           </button>
-          
+
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveTab('Dashboard')}>
             <div className="w-8 h-8 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/20">
               <span className="text-white text-base">🌙</span>
@@ -130,7 +139,7 @@ function OneiroAppContent() {
 
         {/* Right Side: Network status, profile & notification logs */}
         <div className="flex items-center gap-4">
-          
+
           {/* Synchronizer Action Status indicator */}
           <div className="flex items-center gap-2 px-3 py-1 bg-emerald-500/10 rounded-full border border-emerald-500/20">
             <div className={`w-2 h-2 rounded-full ${isOnline ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`}></div>
@@ -159,21 +168,20 @@ function OneiroAppContent() {
 
       {/* 2. BODY FRAME: PERSISTENT THREE-PANEL DESKTOP LAYOUT */}
       <div className="flex-1 flex overflow-hidden">
-        
+
         {/* Panel A: Sidebar Navigation Panel */}
         <nav className={`h-full border-r border-white/5 bg-[#08080c] shrink-0 flex flex-col justify-between p-3.5 transition-all duration-300 relative z-30 ${sidebarOpen ? 'w-60 translate-x-0' : 'w-0 -translate-x-full overflow-hidden p-0 border-none'}`}>
           <div className="space-y-1">
             {sidebarItems.map((item) => {
               const isActive = activeTab === item.name;
+              const Icon = item.icon;
               return (
                 <button
                   key={item.name}
                   onClick={() => setActiveTab(item.name)}
                   className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all font-sans text-xs font-semibold cursor-pointer border ${isActive ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30 shadow-lg shadow-indigo-500/5' : 'text-slate-400 hover:bg-white/[0.03] hover:text-slate-200 border-transparent'}`}
                 >
-                  <span className={`material-symbols-outlined text-lg ${isActive ? 'text-indigo-400' : 'text-slate-500'}`}>
-                    {item.icon}
-                  </span>
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-indigo-400' : item.color} opacity-80`} />
                   <span>{item.name}</span>
                 </button>
               );
@@ -189,13 +197,13 @@ function OneiroAppContent() {
 
         {/* Panel B: Center Main Workspace Panel */}
         <main className="flex-1 overflow-y-auto p-6 custom-scrollbar relative z-10 bg-transparent">
-          
+
           {/* Tabs Assembler */}
           <div className="max-w-7xl mx-auto space-y-6">
             {activeTab === 'Dashboard' && (
-              <DashboardView 
-                onNavigate={setActiveTab} 
-                onOpenArtworkDetail={setSelectedArtworkDream} 
+              <DashboardView
+                onNavigate={setActiveTab}
+                onOpenArtworkDetail={setSelectedArtworkDream}
               />
             )}
             {activeTab === 'Journal' && <JournalView />}
@@ -220,7 +228,7 @@ function OneiroAppContent() {
           </div>
 
           <div className="space-y-4 flex-1 overflow-y-auto custom-scrollbar">
-            
+
             {/* Active Telemetry Status Cards */}
             <div className="p-4 rounded-xl bg-white/[0.01] border border-white/5 space-y-3">
               <span className="text-[9px] font-mono text-slate-500 uppercase">ACTIVE SWARM AGENT</span>

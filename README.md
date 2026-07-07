@@ -26,6 +26,9 @@ Oneiromantia follows a Sequential Orchestration pattern with a parallel dispatch
   3. **Pattern Analyst:** Conducts cross-session analysis to report on emotional arcs and emerging themes.
   4. **Art Generator:** Translates symbol graphs into a complete p5.js 3D sketch using manual projection and depth-sorting (Painter's Algorithm).
 
+  ![Agent Architecture Structure](docs/oneiromantia_architecture.svg)
+
+
 ### Data Layer: DreamJournalMCPServer
 
 The MCP Server acts as the project's source of truth, providing resources like dream://entries and tools like save_entry to ensure the agents remain grounded in the user's historical data.

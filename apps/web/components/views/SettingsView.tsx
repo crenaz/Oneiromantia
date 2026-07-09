@@ -25,7 +25,7 @@ export function SettingsView() {
         <h2 className="font-display text-3xl font-bold text-white flex items-center gap-2">
           <span>Observatory Settings</span>
         </h2>
-        <p className="text-[#ccc3d8]/60 text-sm">
+        <p className="text-mist/60 text-sm">
           Configure multi-agent swarm parameters, API keys, privacy variables, and offline caching directories.
         </p>
       </div>
@@ -33,16 +33,16 @@ export function SettingsView() {
       {/* Profile Settings */}
       <div className="glass-panel p-6 rounded-2xl space-y-4">
         <div className="flex gap-3 items-center border-b border-white/5 pb-3">
-          <User className="w-5 h-5 text-[#d2bbff]" />
+          <User className="w-5 h-5 text-lilac" />
           <h3 className="font-display text-lg font-bold text-white">Observer Identity</h3>
         </div>
         <div className="space-y-2">
-          <label className="text-xs font-mono text-[#ccc3d8]/60 uppercase tracking-wider block">Observer Name</label>
+          <label className="text-xs font-mono text-mist/60 uppercase tracking-wider block">Observer Name</label>
           <input
             type="text"
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
-            className="w-full bg-[#1c1b1d]/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#22d3ee] transition-all text-white"
+            className="w-full bg-elevated/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-aurora-cyan transition-all text-white"
           />
         </div>
       </div>
@@ -50,15 +50,15 @@ export function SettingsView() {
       {/* AI Orchestration Config */}
       <div className="glass-panel p-6 rounded-2xl space-y-4">
         <div className="flex gap-3 items-center border-b border-white/5 pb-3">
-          <Key className="w-5 h-5 text-[#22d3ee]" />
+          <Key className="w-5 h-5 text-aurora-cyan" />
           <h3 className="font-display text-lg font-bold text-white">AI Engine Configuration</h3>
         </div>
         
         <div className="space-y-4">
-          <div className="flex justify-between items-center bg-[#09090b]/40 p-3.5 rounded-xl border border-white/5">
+          <div className="flex justify-between items-center bg-background/40 p-3.5 rounded-xl border border-white/5">
             <div className="space-y-0.5">
               <span className="text-xs font-medium text-white block">Server-Side Gemini API Key</span>
-              <span className="text-[10px] font-mono text-[#ccc3d8]/40">Managed securely on server via .env</span>
+              <span className="text-[10px] font-mono text-mist/40">Managed securely on server via .env</span>
             </div>
             <span className="text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full">
               ACTIVE & SECURED
@@ -68,13 +68,13 @@ export function SettingsView() {
           <div className="flex justify-between items-center">
             <div className="space-y-0.5">
               <span className="text-xs font-medium text-white block">Enable Swarm Co-occurrence Mapping</span>
-              <span className="text-[10px] font-mono text-[#ccc3d8]/40">Automatically trigger multi-agents on text entry</span>
+              <span className="text-[10px] font-mono text-mist/40">Automatically trigger multi-agents on text entry</span>
             </div>
             <input
               type="checkbox"
               checked={useAI}
               onChange={(e) => setUseAI(e.target.checked)}
-              className="w-4 h-4 text-[#7c3aed] bg-[#09090b] rounded border-white/10 focus:ring-[#7c3aed]"
+              className="w-4 h-4 text-primary bg-background rounded border-white/10 focus:ring-primary"
             />
           </div>
         </div>
@@ -83,20 +83,20 @@ export function SettingsView() {
       {/* Notification Preferences */}
       <div className="glass-panel p-6 rounded-2xl space-y-4">
         <div className="flex gap-3 items-center border-b border-white/5 pb-3">
-          <Bell className="w-5 h-5 text-[#f9bd22]" />
+          <Bell className="w-5 h-5 text-moon-gold" />
           <h3 className="font-display text-lg font-bold text-white">Lucidity Notifications</h3>
         </div>
 
         <div className="flex justify-between items-center">
           <div className="space-y-0.5">
             <span className="text-xs font-medium text-white block">Morning Reflection Reminders</span>
-            <span className="text-[10px] font-mono text-[#ccc3d8]/40">Alert me daily at 07:00 AM to log my dream seeds</span>
+            <span className="text-[10px] font-mono text-mist/40">Alert me daily at 07:00 AM to log my dream seeds</span>
           </div>
           <input
             type="checkbox"
             checked={lucidNotifications}
             onChange={(e) => setLucidNotifications(e.target.checked)}
-            className="w-4 h-4 text-[#f9bd22] bg-[#09090b] rounded border-white/10 focus:ring-[#f9bd22]"
+            className="w-4 h-4 text-moon-gold bg-background rounded border-white/10 focus:ring-moon-gold"
           />
         </div>
       </div>
@@ -105,7 +105,7 @@ export function SettingsView() {
       <div className="flex justify-end gap-3 pt-4 border-t border-white/5">
         <button
           onClick={handleSaveSettings}
-          className="px-6 py-3 bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold text-xs rounded-full shadow-lg transition-transform active:scale-95 flex items-center gap-1.5 cursor-pointer"
+          className="px-6 py-3 bg-primary hover:bg-primary-container text-white font-bold text-xs rounded-full shadow-lg transition-transform active:scale-95 flex items-center gap-1.5 cursor-pointer"
         >
           <Save className="w-4 h-4" />
           <span>Save Configuration</span>

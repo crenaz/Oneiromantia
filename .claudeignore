@@ -1,0 +1,60 @@
+# Dependencies
+node_modules/
+.venv/
+.pnpm-store/
+
+# Frontend build artifacts (apps/web)
+.next/
+.open-next/
+.wrangler/
+out/
+build/
+dist/
+*.tsbuildinfo
+
+# Backend build/cache artifacts (apps/api)
+__pycache__/
+*.py[cod]
+*.egg-info/
+wheels/
+
+# Lockfiles (large, rarely need full contents read)
+package-lock.json
+uv.lock
+
+# Logs
+*.log
+npm-debug.log*
+
+# Binaries / media
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.ico
+*.pdf
+*.zip
+*.tar
+*.tar.gz
+*.woff
+*.woff2
+*.ttf
+*.otf
+
+# Runtime-generated output
+generated/
+
+# Large notebooks / error dumps not needed for editing
+Oneiromantia_codebase.ipynb
+kaggle.ipynb.errorMesg.md
+
+# Editor/OS cruft
+.DS_Store
+.vscode/
+.idea/
+
+# Env files (may contain secrets)
+.env
+.env.*
+.dev.vars
+!.env.example

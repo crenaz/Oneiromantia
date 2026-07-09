@@ -4,6 +4,145 @@ import { NextRequest, NextResponse } from "next/server";
 // Dynamic model alias from skill guidelines
 const MODEL_NAME = "gemini-3.5-flash";
 
+// Base URL of the real Oneiromantia multi-agent backend (apps/api FastAPI server).
+// e.g. http://localhost:8000 for local dev. Left unset, this tier is skipped.
+const API_BASE_URL = process.env.API_BASE_URL;
+
+/**
+ * Calls the real ADK multi-agent pipeline (apps/api) and, on success, maps its
+ * response shape into the analysis shape the frontend/UI expects. Returns null
+ * on any failure so the caller can fall through to the next tier.
+ */
+async function callOneiroBackend(text: string, body: any): Promise<any | null> {
+  if (!API_BASE_URL) return null;
+
+  // Generous timeout: the ADK pipeline runs 3 sequential LLM calls plus MCP
+  // round-trips. Local CPU-only Ollama models have been observed anywhere
+  // from ~3 to 4+ minutes depending on system load; hosted Gemini/Gemma-via-API
+  // is much faster but this stays generous for both rather than discarding
+  // real, correct work moments before it would have finished.
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 480_000);
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/analyze`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ dream: text }),
+      signal: controller.signal,
+    });
+
+    if (!res.ok) {
+      console.error(`Oneiromantia backend returned ${res.status}`);
+      return null;
+    }
+
+    const data = await res.json();
+    return mapBackendResponseToAnalysis(data, body);
+  } catch (error: any) {
+    console.error("Oneiromantia backend unreachable or failed:", error.message);
+    return null;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+/**
+ * apps/api's schema (session_id, report, symbols, patterns, art_seed) doesn't
+ * line up 1:1 with the frontend's rich mock schema (archetypes, per-symbol
+ * frequency/trend, artworkPrompt, etc.) — the ADK agents don't produce those
+ * fields at all. This derives every frontend field from real pipeline output
+ * where possible, and falls back to honest, clearly-labeled defaults (e.g.
+ * empty archetypes) rather than inventing data the backend never analyzed.
+ */
+/**
+ * The art_generator agent's actual p5.js output only ever reaches the client
+ * embedded in `report`'s "## ART_SKETCH" markdown section (`art_seed` is a
+ * JSON symbol graph, not code, despite the name). Gemma2:2b sometimes wraps
+ * its own output in a redundant/nested code fence, so this strips every
+ * fence marker rather than assuming exactly one pair.
+ */
+function extractSketchCode(report: string | undefined): string | null {
+  if (!report) return null;
+  const marker = "## ART_SKETCH";
+  const idx = report.indexOf(marker);
+  if (idx === -1) return null;
+  let code = report
+    .slice(idx + marker.length)
+    .replace(/```(javascript|js)?/g, "")
+    .trim();
+
+  // Despite being told "no explanation", the model sometimes appends trailing
+  // markdown commentary after otherwise-valid code (e.g. "**Note:** this..."
+  // or "* **p5.js** documentation..."). The sketch spec never uses the `**`
+  // exponentiation operator, so its first appearance reliably marks the start
+  // of prose bolted onto the end — truncate there rather than relying on
+  // prompt compliance alone.
+  const starIdx = code.indexOf("**");
+  if (starIdx !== -1) {
+    code = code.slice(0, starIdx).trim();
+  }
+
+  return code.length > 0 ? code : null;
+}
+
+function mapBackendResponseToAnalysis(data: any, body: any) {
+  const symbolsOut = data.symbols || {};
+  const patternsOut = data.patterns || {};
+  const symbolList: Array<{ name: string; recurring?: boolean }> = symbolsOut.symbols || [];
+  const emotionList: string[] = symbolsOut.emotions || [];
+  const setting: string = symbolsOut.setting || "an unknown place";
+  const recurringClusters: string[][] = patternsOut.recurring_clusters || [];
+  const clusteredNames = new Set(recurringClusters.flat());
+
+  const symbols = symbolList.map((s) => {
+    const boosted = !!s.recurring || clusteredNames.has(s.name);
+    const score = boosted ? 80 : 35;
+    return {
+      name: s.name,
+      frequency: score,
+      trend: boosted ? "up" : "down",
+      score,
+      description: s.recurring
+        ? `A recurring symbol resurfacing in this ${setting} dreamscape.`
+        : `A newly emerging symbol within this ${setting} dreamscape.`,
+    };
+  });
+
+  const emotions = emotionList.map((name, i) => ({
+    name,
+    score: Math.max(90 - i * 15, 40),
+    description: "Emotional tone detected by the symbol extractor agent.",
+  }));
+
+  const sessionId: string = data.session_id || "";
+  let seedHash = 0;
+  for (let i = 0; i < sessionId.length; i++) {
+    seedHash = (seedHash * 31 + sessionId.charCodeAt(i)) >>> 0;
+  }
+  const artworkSeed = sessionId ? seedHash % 10000 : Math.floor(Math.random() * 10000);
+
+  return {
+    title: body.title,
+    lucidity: "Medium",
+    dominantEmotion: emotionList[0] || body.mood || "Vague",
+    summary: patternsOut.emotional_arc || "Dream analyzed by the Oneiromantia multi-agent pipeline.",
+    symbols,
+    emotions,
+    archetypes: [], // not produced by the current ADK agent pipeline
+    artworkPrompt: `A surreal ${setting} dreamscape charged with ${emotionList.join(" and ") || "quiet mystery"}.`,
+    artworkSeed,
+    generatedSketchCode: extractSketchCode(data.report),
+    agentLogs: [
+      `>> symbol_extractor: ${symbolList.length} symbol(s) detected in "${setting}"`,
+      `>> pattern_analyst: ${recurringClusters.length} recurring cluster(s); emerging: ${(patternsOut.emerging_themes || []).join(", ") || "none"}`,
+      `>> art_generator: sketch synthesized for session ${sessionId || "unknown"}`,
+      `>> oneiro_orchestrator: pipeline complete`,
+    ],
+    _source: "oneiro-backend",
+  };
+}
+
 function getGeminiClient() {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey || apiKey === "MY_GEMINI_API_KEY") {
@@ -88,6 +227,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Text is required" }, { status: 400 });
     }
 
+    // Tier 1: the real Oneiromantia multi-agent backend (apps/api)
+    const backendAnalysis = await callOneiroBackend(text, body);
+    if (backendAnalysis) {
+      return NextResponse.json({
+        ...backendAnalysis,
+        title: body.title || backendAnalysis.title || "Untitled Subconscious Event",
+        normalizedText: text,
+        _simulated: false,
+      });
+    }
+
+    // Tier 2: direct Gemini call
     const ai = getGeminiClient();
 
     // If no client, do smart keyword matching or fallback

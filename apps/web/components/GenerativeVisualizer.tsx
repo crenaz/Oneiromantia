@@ -6,10 +6,56 @@ interface GenerativeVisualizerProps {
   seed: number;
   mood: 'Wonder' | 'Eerie' | 'Calm' | 'Chaos' | 'Vague';
   isPlaying?: boolean;
+  // Real p5.js source from the art_generator agent. Small local models
+  // (gemma2:2b) frequently produce sketches with runtime bugs, so this is
+  // rendered sandboxed with a try/catch fallback rather than trusted outright.
+  sketchCode?: string;
 }
 
-export function GenerativeVisualizer({ seed, mood, isPlaying = true }: GenerativeVisualizerProps) {
+function buildSketchDocument(code: string): string {
+  // Small local models frequently emit code with genuine syntax errors (e.g.
+  // an unquoted UUID literal). If that code were inlined directly into this
+  // script tag, the whole tag would fail to parse — silently, before the
+  // try/catch or even the window.onerror handler below ever runs. Passing it
+  // as a JSON-encoded string defers parsing to runtime, inside the try, so a
+  // SyntaxError becomes a normal catchable error.
+  //
+  // Run it via indirect eval (`(0, eval)(...)`), not `new Function(...)()`.
+  // The art spec asks for p5.js *global mode* (bare `function setup(){}` /
+  // `function draw(){}`), which p5.js auto-detects by checking
+  // `window.setup`/`window.draw`. `new Function` would scope those
+  // declarations to its own private function body; indirect eval executes
+  // in real global scope, so they actually attach to `window`.
+  const jsonCode = JSON.stringify(code).replace(/<\/script/gi, '<\\/script');
+  return `<!DOCTYPE html>
+<html>
+<head>
+<style>html,body{margin:0;padding:0;overflow:hidden;background:#09090B;height:100%;}
+#error{color:#958da1;font-family:monospace;font-size:11px;padding:12px;white-space:pre-wrap;}</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+</head>
+<body>
+<script>
+function showError(msg) {
+  document.body.innerHTML = '<div id="error">Generated sketch failed to render:\\n' + msg + '</div>';
+}
+window.onerror = function(msg) { showError(String(msg)); return true; };
+try {
+  (0, eval)(${jsonCode});
+} catch (e) {
+  showError(e && e.message ? e.message : String(e));
+}
+</script>
+</body>
+</html>`;
+}
+
+export function GenerativeVisualizer({ seed, mood, isPlaying = true, sketchCode }: GenerativeVisualizerProps) {
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
+  const sketchDoc = React.useMemo(
+    () => (sketchCode ? buildSketchDocument(sketchCode) : null),
+    [sketchCode]
+  );
 
   React.useEffect(() => {
     const canvas = canvasRef.current;
@@ -214,8 +260,23 @@ export function GenerativeVisualizer({ seed, mood, isPlaying = true }: Generativ
     };
   }, [seed, mood, isPlaying]);
 
+  if (sketchDoc) {
+    return (
+      <div className="w-full h-full relative overflow-hidden bg-background">
+        <iframe
+          key={sketchCode}
+          srcDoc={sketchDoc}
+          sandbox="allow-scripts"
+          title="AI-generated dream sketch"
+          className="w-full h-full block border-0"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+      </div>
+    );
+  }
+
   return (
-    <div className="w-full h-full relative overflow-hidden bg-[#09090B]">
+    <div className="w-full h-full relative overflow-hidden bg-background">
       <canvas ref={canvasRef} className="w-full h-full block" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
     </div>

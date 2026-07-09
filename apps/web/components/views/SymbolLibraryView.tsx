@@ -48,7 +48,7 @@ export function SymbolLibraryView() {
         <h2 className="font-display text-3xl font-bold text-white flex items-center gap-2">
           <span>Subconscious Symbol Library</span>
         </h2>
-        <p className="text-[#ccc3d8]/60 text-sm max-w-xl">
+        <p className="text-mist/60 text-sm max-w-xl">
           An interactive encyclopedia of recurrences in your dreams, mapped back to Jungian archetypes and subconscious frequency.
         </p>
       </div>
@@ -56,13 +56,13 @@ export function SymbolLibraryView() {
       {/* Search Bar & Filter */}
       <div className="flex gap-4">
         <div className="flex-1 relative">
-          <Search className="w-4 h-4 text-[#ccc3d8]/50 absolute left-4 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-mist/50 absolute left-4 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search symbols (e.g. glass, cathedral, sea...)"
-            className="w-full bg-[#1c1b1d]/40 border border-white/10 rounded-xl pl-12 pr-4 py-3.5 text-sm focus:outline-none focus:border-[#d2bbff] focus:ring-1 focus:ring-[#d2bbff]/50 transition-all text-white placeholder:text-white/20"
+            className="w-full bg-elevated/40 border border-white/10 rounded-xl pl-12 pr-4 py-3.5 text-sm focus:outline-none focus:border-lilac focus:ring-1 focus:ring-lilac/50 transition-all text-white placeholder:text-white/20"
           />
         </div>
       </div>
@@ -78,33 +78,33 @@ export function SymbolLibraryView() {
             >
               <div className="space-y-3">
                 <div className="flex justify-between items-start">
-                  <span className="font-mono text-[10px] text-[#d2bbff] tracking-widest uppercase">SYMBOL #{idx + 101}</span>
-                  <div className="flex items-center gap-1 bg-[#22d3ee]/5 px-2 py-0.5 rounded border border-[#22d3ee]/20 text-[#22d3ee] font-mono text-[10px]">
+                  <span className="font-mono text-[10px] text-lilac tracking-widest uppercase">SYMBOL #{idx + 101}</span>
+                  <div className="flex items-center gap-1 bg-aurora-cyan/5 px-2 py-0.5 rounded border border-aurora-cyan/20 text-aurora-cyan font-mono text-[10px]">
                     {sym.trend === 'up' ? (
                       <TrendingUp className="w-3 h-3" />
                     ) : (
-                      <TrendingDown className="w-3 h-3 text-[#ec4899]" />
+                      <TrendingDown className="w-3 h-3 text-dream-pink" />
                     )}
                     <span>{sym.trend === 'up' ? 'ACCUMULATING' : 'DIVERGING'}</span>
                   </div>
                 </div>
 
-                <h3 className="font-display text-xl font-bold text-white group-hover:text-[#22d3ee] transition-colors">
+                <h3 className="font-display text-xl font-bold text-white group-hover:text-aurora-cyan transition-colors">
                   {sym.name}
                 </h3>
-                <p className="text-[#ccc3d8]/70 text-xs leading-relaxed line-clamp-2">
+                <p className="text-mist/70 text-xs leading-relaxed line-clamp-2">
                   {sym.description}
                 </p>
               </div>
 
               <div className="flex justify-between items-center border-t border-white/5 pt-4 mt-6">
                 <div className="space-y-0.5">
-                  <span className="text-[10px] font-mono text-[#ccc3d8]/40">FREQUENCY</span>
+                  <span className="text-[10px] font-mono text-mist/40">FREQUENCY</span>
                   <p className="font-display font-bold text-sm text-white">{sym.frequency || sym.score}%</p>
                 </div>
                 <div className="space-y-0.5 text-right">
-                  <span className="text-[10px] font-mono text-[#ccc3d8]/40">ASSOCIATIONS</span>
-                  <p className="font-mono text-[10px] text-[#d2bbff]">Jungian Matrix</p>
+                  <span className="text-[10px] font-mono text-mist/40">ASSOCIATIONS</span>
+                  <p className="font-mono text-[10px] text-lilac">Jungian Matrix</p>
                 </div>
               </div>
             </div>
@@ -112,7 +112,7 @@ export function SymbolLibraryView() {
         })}
 
         {filteredSymbols.length === 0 && (
-          <div className="col-span-full text-center py-24 text-[#ccc3d8]/40">
+          <div className="col-span-full text-center py-24 text-mist/40">
             No symbols found matching your filter criteria. Try typing a new dream in the Journal!
           </div>
         )}
@@ -124,7 +124,7 @@ export function SymbolLibraryView() {
           <div className="glass-panel max-w-lg w-full rounded-2xl p-6 space-y-6 relative border border-white/10 glow-violet">
             <div className="flex justify-between items-start">
               <div>
-                <span className="font-mono text-[10px] text-[#d2bbff] tracking-widest uppercase">SYMBOL METADATA DETAILED</span>
+                <span className="font-mono text-[10px] text-lilac tracking-widest uppercase">SYMBOL METADATA DETAILED</span>
                 <h3 className="font-display text-2xl font-bold text-white mt-1">{selectedSymbol.name}</h3>
               </div>
               <button
@@ -136,32 +136,32 @@ export function SymbolLibraryView() {
             </div>
 
             <div className="space-y-2">
-              <span className="text-xs font-mono text-[#ccc3d8]/60 uppercase">Subconscious Significance</span>
-              <p className="text-[#ccc3d8] text-sm leading-relaxed bg-[#1c1b1d]/40 p-4 rounded-xl border border-white/5">
+              <span className="text-xs font-mono text-mist/60 uppercase">Subconscious Significance</span>
+              <p className="text-mist text-sm leading-relaxed bg-elevated/40 p-4 rounded-xl border border-white/5">
                 {selectedSymbol.description}
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-4 border-t border-b border-white/5 py-4">
               <div>
-                <span className="text-[10px] font-mono text-[#ccc3d8]/40 block">INTEGRATION INDEX</span>
+                <span className="text-[10px] font-mono text-mist/40 block">INTEGRATION INDEX</span>
                 <span className="font-display font-bold text-lg text-white">{selectedSymbol.frequency}%</span>
               </div>
               <div>
-                <span className="text-[10px] font-mono text-[#ccc3d8]/40 block">TREND ARCH</span>
-                <span className="font-mono text-xs text-[#22d3ee] flex items-center gap-1 mt-1">
+                <span className="text-[10px] font-mono text-mist/40 block">TREND ARCH</span>
+                <span className="font-mono text-xs text-aurora-cyan flex items-center gap-1 mt-1">
                   {selectedSymbol.trend === 'up' ? 'Ascending (Expanding)' : 'Descending (Fading)'}
                 </span>
               </div>
             </div>
 
             <div className="space-y-3">
-              <span className="text-xs font-mono text-[#ccc3d8]/60 uppercase block">Associated Dream Threads</span>
+              <span className="text-xs font-mono text-mist/60 uppercase block">Associated Dream Threads</span>
               <div className="space-y-2">
                 {(selectedSymbol as any).associatedDreams?.map((d: Dream, idx: number) => (
                   <div key={idx} className="flex justify-between items-center bg-white/[0.01] px-4 py-2.5 rounded-lg border border-white/5">
                     <span className="text-xs text-white font-medium">{d.title}</span>
-                    <span className="text-[10px] font-mono text-[#ccc3d8]/40">{d.date}</span>
+                    <span className="text-[10px] font-mono text-mist/40">{d.date}</span>
                   </div>
                 ))}
               </div>
@@ -169,7 +169,7 @@ export function SymbolLibraryView() {
 
             <button
               onClick={() => setSelectedSymbol(null)}
-              className="w-full py-3 bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold text-xs rounded-xl shadow-lg transition-colors cursor-pointer"
+              className="w-full py-3 bg-primary hover:bg-primary-container text-white font-bold text-xs rounded-xl shadow-lg transition-colors cursor-pointer"
             >
               Consolidate Analysis
             </button>

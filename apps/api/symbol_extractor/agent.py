@@ -1,5 +1,13 @@
+import os
 from google.adk.agents.llm_agent import Agent
 from pydantic import BaseModel, Field
+
+# Dynamic model selection for local Ollama vs cloud Gemini
+if os.environ.get("USE_OLLAMA") == "true":
+    from google.adk.models.lite_llm import LiteLlm
+    MODEL = LiteLlm(model="ollama_chat/llama3.2:3b")
+else:
+    MODEL = "gemini-2.0-flash"
 
 class SymbolItem(BaseModel):
     name: str = Field(description="Name of the symbol, e.g. 'water', 'tower'")
@@ -18,7 +26,7 @@ def make_symbol_extractor() -> Agent:
     """
     return Agent(
         name="symbol_extractor",
-        model='gemma-4-31b-it',
+        model=MODEL,
         description="Extracts archetypal symbols, emotional tone, and setting from a dream.",
         output_schema=SymbolExtractorOutput,  # Enforce structured validation output
         instruction="""

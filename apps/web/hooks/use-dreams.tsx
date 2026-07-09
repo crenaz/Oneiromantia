@@ -36,9 +36,17 @@ export interface Dream {
   archetypes: ArchetypeInfo[];
   artworkPrompt: string;
   artworkSeed: number;
+  // Raw p5.js source from the real art_generator agent, when the backend
+  // pipeline actually ran. Absent for mock/simulated/fallback analyses.
+  generatedSketchCode?: string;
   agentLogs: string[];
   syncStatus: 'synced' | 'pending';
   createdAt: string;
+  // True while a real analysis request is in flight for this dream (including
+  // background, un-awaited calls kicked off after creation). Lets any view
+  // watching this dream show a persistent "analyzing" indicator regardless of
+  // how long the underlying pipeline actually takes.
+  isAnalyzing?: boolean;
 }
 
 interface DreamContextType {
@@ -161,34 +169,44 @@ const INITIAL_DREAMS: Dream[] = [
 ];
 
 export function DreamProvider({ children }: { children: React.ReactNode }) {
-  const [dreams, setDreams] = React.useState<Dream[]>(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('oneiro_dreams');
-      if (stored) {
-        try {
-          return JSON.parse(stored);
-        } catch (e) {
-          console.error('Error parsing stored dreams, resetting.', e);
-        }
-      }
-    }
-    return INITIAL_DREAMS;
-  });
-  const [isOnline, setIsOnline] = React.useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      return navigator.onLine;
-    }
-    return true;
-  });
+  // Always-current mirror of `dreams`, for code paths (delayed setTimeout
+  // callbacks, in particular) that were created in an earlier render and
+  // would otherwise see a stale, pre-update `dreams` closure.
+  const dreamsRef = React.useRef<Dream[]>([]);
+
+  // Both state values below must start identical on server and client, or
+  // React throws a hydration mismatch the moment either diverges from its
+  // default (guaranteed for `dreams` as soon as localStorage holds anything
+  // beyond the 3 seed entries, i.e. after the very first dream is ever
+  // added). Real client-only values (localStorage, navigator.onLine) are
+  // applied in the effect below, which only runs post-hydration.
+  const [dreams, setDreams] = React.useState<Dream[]>(INITIAL_DREAMS);
+  dreamsRef.current = dreams;
+
+  const [isOnline, setIsOnline] = React.useState<boolean>(true);
   const [isSyncing, setIsSyncing] = React.useState<boolean>(false);
 
   // Initialize and load from local storage
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       const stored = localStorage.getItem('oneiro_dreams');
-      if (!stored) {
+      if (stored) {
+        try {
+          const parsed: Dream[] = JSON.parse(stored);
+          // Any dream still marked isAnalyzing on a fresh page load is stale:
+          // no in-memory JS state (including whatever fetch was tracking it)
+          // survives a reload, so nothing will ever clear that flag again.
+          // Without this, an interrupted-mid-analysis reload leaves a
+          // permanently "stuck" indicator with no real work behind it.
+          setDreams(parsed.map(d => (d.isAnalyzing ? { ...d, isAnalyzing: false } : d)));
+        } catch (e) {
+          console.error('Error parsing stored dreams, resetting.', e);
+        }
+      } else {
         localStorage.setItem('oneiro_dreams', JSON.stringify(INITIAL_DREAMS));
       }
+
+      setIsOnline(navigator.onLine);
 
       // Online/Offline Listeners
       const goOnline = () => {
@@ -217,14 +235,46 @@ export function DreamProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // Functional variant that derives the next array from the latest state,
+  // rather than a closed-over `dreams` snapshot. Long-running background
+  // calls (like analyzeExistingDream) can outlive the render that started
+  // them, so reading from `prev` here avoids clobbering concurrent updates.
+  const updateDreams = (updater: (prev: Dream[]) => Dream[]) => {
+    setDreams(prev => {
+      const next = updater(prev);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('oneiro_dreams', JSON.stringify(next));
+      }
+      return next;
+    });
+  };
+
   const syncQueueLength = React.useMemo(() => {
     return dreams.filter(d => d.syncStatus === 'pending').length;
   }, [dreams]);
 
   // Analyze a pending or existing dream using the server-side Gemini API
   const analyzeExistingDream = async (id: string) => {
-    const dream = dreams.find(d => d.id === id);
+    // Read via the ref, not the closed-over `dreams`: this function is
+    // frequently invoked from a setTimeout scheduled by an earlier render
+    // (see addDream below), whose closure would otherwise see a stale
+    // pre-update array and silently no-op here, leaving isAnalyzing stuck.
+    const dream = dreamsRef.current.find(d => d.id === id);
     if (!dream) return;
+
+    // Mark as actively analyzing immediately, so any view watching this dream
+    // (via `dreams`/`activeDream`) can show a persistent indicator for however
+    // long the real pipeline takes — not just for the synchronous call that kicked it off.
+    updateDreams(prev => prev.map(d => (d.id === id ? { ...d, isAnalyzing: true } : d)));
+
+    // Bounded wait: even if something upstream stalls (network stall, service
+    // worker weirdness, etc.), isAnalyzing must eventually clear on its own
+    // rather than stay stuck indefinitely with no real work behind it. Must
+    // stay longer than the Next.js route's own backend timeout (480s) so we
+    // don't abort the client side while the server is still legitimately
+    // waiting on the real pipeline.
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 540_000);
 
     try {
       const res = await fetch('/api/analyze', {
@@ -236,11 +286,12 @@ export function DreamProvider({ children }: { children: React.ReactNode }) {
           mood: dream.mood,
           date: dream.date
         }),
+        signal: controller.signal,
       });
 
       if (res.ok) {
         const analysis = await res.json();
-        const updated = dreams.map(d => {
+        updateDreams(prev => prev.map(d => {
           if (d.id === id) {
             return {
               ...d,
@@ -253,16 +304,22 @@ export function DreamProvider({ children }: { children: React.ReactNode }) {
               archetypes: analysis.archetypes || [],
               artworkPrompt: analysis.artworkPrompt || 'Surreal glowing geometric lines floating in space',
               artworkSeed: analysis.artworkSeed || Math.floor(Math.random() * 10000),
+              generatedSketchCode: analysis.generatedSketchCode || undefined,
               agentLogs: analysis.agentLogs || ['>> direct_semantic_pipeline_completed'],
-              syncStatus: 'synced' as const
+              syncStatus: 'synced' as const,
+              isAnalyzing: false
             };
           }
           return d;
-        });
-        saveDreams(updated);
+        }));
+      } else {
+        updateDreams(prev => prev.map(d => (d.id === id ? { ...d, isAnalyzing: false } : d)));
       }
     } catch (e) {
       console.error('Error analyzing dream:', e);
+      updateDreams(prev => prev.map(d => (d.id === id ? { ...d, isAnalyzing: false } : d)));
+    } finally {
+      clearTimeout(timeoutId);
     }
   };
 
@@ -298,7 +355,8 @@ export function DreamProvider({ children }: { children: React.ReactNode }) {
         isOnline ? `>> connection_active: analyzing...` : `>> connection_inactive: saved to local queue`
       ],
       syncStatus: isOnline ? 'synced' : 'pending',
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      isAnalyzing: isOnline
     };
 
     const updatedDreams = [newDream, ...dreams];

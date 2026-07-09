@@ -29,7 +29,7 @@ export function DreamGalleryView() {
           <h2 className="font-display text-3xl font-bold text-white flex items-center gap-2">
             <span>Subconscious Dream Gallery</span>
           </h2>
-          <p className="text-[#ccc3d8]/60 text-sm max-w-xl">
+          <p className="text-mist/60 text-sm max-w-xl">
             Procedural canvas artworks synthesized by the Oneiromantia Art Renderer agent.
           </p>
         </div>
@@ -39,7 +39,7 @@ export function DreamGalleryView() {
             <button
               key={f}
               onClick={() => setActiveFilter(f)}
-              className={`px-3 py-1.5 rounded-full font-mono text-[10px] border transition-all cursor-pointer ${activeFilter === f ? 'bg-[#7c3aed] text-white border-[#7c3aed]' : 'border-white/5 text-[#ccc3d8]/60 bg-[#131315]/40 hover:text-white'}`}
+              className={`px-3 py-1.5 rounded-full font-mono text-[10px] border transition-all cursor-pointer ${activeFilter === f ? 'bg-primary text-white border-primary' : 'border-white/5 text-mist/60 bg-surface/40 hover:text-white'}`}
             >
               {f}
             </button>
@@ -57,27 +57,27 @@ export function DreamGalleryView() {
               className="glass-card rounded-2xl overflow-hidden group cursor-pointer flex flex-col"
             >
               <div className="aspect-square bg-black relative overflow-hidden">
-                <GenerativeVisualizer seed={d.artworkSeed} mood={d.mood} isPlaying={false} />
+                <GenerativeVisualizer seed={d.artworkSeed} mood={d.mood} isPlaying={false} sketchCode={d.generatedSketchCode} />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <div className="w-12 h-12 rounded-full bg-[#7c3aed]/90 flex items-center justify-center text-white shadow-lg glow-violet">
+                  <div className="w-12 h-12 rounded-full bg-primary/90 flex items-center justify-center text-white shadow-lg glow-violet">
                     <Play className="w-5 h-5 ml-1" />
                   </div>
                 </div>
               </div>
 
-              <div className="p-5 space-y-3 bg-[#131315]/40">
-                <div className="flex justify-between items-center text-[10px] font-mono text-[#ccc3d8]/40">
+              <div className="p-5 space-y-3 bg-surface/40">
+                <div className="flex justify-between items-center text-[10px] font-mono text-mist/40">
                   <span>SEED: #{d.artworkSeed}</span>
                   <span>{d.date}</span>
                 </div>
-                <h3 className="font-display text-lg font-bold text-white truncate group-hover:text-[#22d3ee] transition-colors">
+                <h3 className="font-display text-lg font-bold text-white truncate group-hover:text-aurora-cyan transition-colors">
                   {d.title}
                 </h3>
                 <div className="flex justify-between items-center pt-2 border-t border-white/5">
-                  <span className="text-[10px] font-mono text-[#d2bbff] bg-[#7c3aed]/10 px-2.5 py-1 rounded-full border border-[#7c3aed]/20">
+                  <span className="text-[10px] font-mono text-lilac bg-primary/10 px-2.5 py-1 rounded-full border border-primary/20">
                     {d.mood}
                   </span>
-                  <button className="text-[#ccc3d8]/50 hover:text-[#ec4899] transition-colors p-1" title="Favorite">
+                  <button className="text-mist/50 hover:text-dream-pink transition-colors p-1" title="Favorite">
                     <Heart className="w-4 h-4" />
                   </button>
                 </div>
@@ -87,7 +87,7 @@ export function DreamGalleryView() {
         })}
 
         {filteredDreams.length === 0 && (
-          <div className="col-span-full text-center py-24 text-[#ccc3d8]/40">
+          <div className="col-span-full text-center py-24 text-mist/40">
             No generated artworks found matching this filter criteria. Save a dream with this mood to synthesize art!
           </div>
         )}
@@ -100,10 +100,10 @@ export function DreamGalleryView() {
             
             {/* Visualizer playback column */}
             <div className="flex-1 bg-black relative">
-              <GenerativeVisualizer seed={selectedDream.artworkSeed} mood={selectedDream.mood} isPlaying={isPlaying} />
+              <GenerativeVisualizer seed={selectedDream.artworkSeed} mood={selectedDream.mood} isPlaying={isPlaying} sketchCode={selectedDream.generatedSketchCode} />
               
               {/* Overlay playback toolbar */}
-              <div className="absolute bottom-4 inset-x-4 bg-[#09090b]/85 border border-white/5 p-3 rounded-xl flex justify-between items-center backdrop-blur-md">
+              <div className="absolute bottom-4 inset-x-4 bg-background/85 border border-white/5 p-3 rounded-xl flex justify-between items-center backdrop-blur-md">
                 <div className="flex gap-2">
                   <button
                     onClick={() => setIsPlaying(!isPlaying)}
@@ -124,10 +124,10 @@ export function DreamGalleryView() {
                 </div>
 
                 <div className="flex gap-3 items-center">
-                  <span className="text-[10px] font-mono text-[#ccc3d8]/50">SEED: #{selectedDream.artworkSeed}</span>
+                  <span className="text-[10px] font-mono text-mist/50">SEED: #{selectedDream.artworkSeed}</span>
                   <button
                     onClick={handleDownload}
-                    className="p-2 bg-[#7c3aed] hover:bg-[#6d28d9] text-white rounded-lg transition-colors flex items-center gap-1 text-xs font-mono"
+                    className="p-2 bg-primary hover:bg-primary-container text-white rounded-lg transition-colors flex items-center gap-1 text-xs font-mono"
                   >
                     <Download className="w-3.5 h-3.5" />
                     <span>Download Bundle</span>
@@ -137,11 +137,11 @@ export function DreamGalleryView() {
             </div>
 
             {/* Sidebar properties description column */}
-            <div className="w-full md:w-80 border-l border-white/5 bg-[#131315]/80 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar">
+            <div className="w-full md:w-80 border-l border-white/5 bg-surface/80 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar">
               <div className="space-y-6">
                 <div className="flex justify-between items-start">
                   <div>
-                    <span className="font-mono text-[9px] text-[#22d3ee] tracking-widest uppercase">GENERATED VISUALIZATION</span>
+                    <span className="font-mono text-[9px] text-aurora-cyan tracking-widest uppercase">GENERATED VISUALIZATION</span>
                     <h3 className="font-display text-xl font-bold text-white mt-1">{selectedDream.title}</h3>
                   </div>
                   <button
@@ -153,14 +153,14 @@ export function DreamGalleryView() {
                 </div>
 
                 <div className="space-y-2">
-                  <span className="text-[10px] font-mono text-[#ccc3d8]/40 block">ARTWORK PROMPT</span>
-                  <p className="text-xs text-[#ccc3d8]/90 leading-relaxed bg-black/30 p-3 rounded-lg border border-white/5 font-serif italic">
+                  <span className="text-[10px] font-mono text-mist/40 block">ARTWORK PROMPT</span>
+                  <p className="text-xs text-mist/90 leading-relaxed bg-black/30 p-3 rounded-lg border border-white/5 font-serif italic">
                     &quot;{selectedDream.artworkPrompt}&quot;
                   </p>
                 </div>
 
                 <div className="space-y-2">
-                  <span className="text-[10px] font-mono text-[#ccc3d8]/40 block">ASSOCIATED EXTRACTS</span>
+                  <span className="text-[10px] font-mono text-mist/40 block">ASSOCIATED EXTRACTS</span>
                   <div className="flex flex-wrap gap-1.5">
                     {selectedDream.symbols.map((sym, idx) => (
                       <span key={idx} className="text-[9px] font-mono bg-white/5 px-2 py-0.5 rounded border border-white/5 text-white/70">
@@ -171,8 +171,8 @@ export function DreamGalleryView() {
                 </div>
 
                 <div className="space-y-2">
-                  <span className="text-[10px] font-mono text-[#ccc3d8]/40 block">EMOTION RANGE</span>
-                  <span className="text-xs text-[#22d3ee] font-medium bg-[#22d3ee]/5 border border-[#22d3ee]/25 px-2.5 py-1 rounded-full inline-block">
+                  <span className="text-[10px] font-mono text-mist/40 block">EMOTION RANGE</span>
+                  <span className="text-xs text-aurora-cyan font-medium bg-aurora-cyan/5 border border-aurora-cyan/25 px-2.5 py-1 rounded-full inline-block">
                     {selectedDream.mood} (Dominant)
                   </span>
                 </div>

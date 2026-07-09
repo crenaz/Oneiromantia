@@ -64,16 +64,16 @@ function OneiroAppContent() {
   const [selectedArtworkDream, setSelectedArtworkDream] = React.useState<Dream | null>(null);
 
   const sidebarItems = [
-    { name: 'Dashboard', icon: Sparkles, color: 'text-[#d2bbff]' },
+    { name: 'Dashboard', icon: Sparkles, color: 'text-lilac' },
     { name: 'Journal', icon: Book, color: 'text-[#adc6ff]' },
-    { name: 'Symbol Library', icon: BookOpen, color: 'text-[#f9bd22]' },
-    { name: 'Archetype Explorer', icon: Compass, color: 'text-[#d2bbff]' },
-    { name: 'Emotional Timeline', icon: TrendingUp, color: 'text-[#22d3ee]' },
-    { name: 'Pattern Network', icon: Network, color: 'text-[#22d3ee]' },
+    { name: 'Symbol Library', icon: BookOpen, color: 'text-moon-gold' },
+    { name: 'Archetype Explorer', icon: Compass, color: 'text-lilac' },
+    { name: 'Emotional Timeline', icon: TrendingUp, color: 'text-aurora-cyan' },
+    { name: 'Pattern Network', icon: Network, color: 'text-aurora-cyan' },
     { name: 'Gallery', icon: Palette, color: 'text-[#adc6ff]' },
-    { name: 'Agent Console', icon: Terminal, color: 'text-[#ec4899]' },
-    { name: 'AI Insights', icon: Brain, color: 'text-[#22c55e]' },
-    { name: 'Settings', icon: Settings, color: 'text-[#ccc3d8]' }
+    { name: 'Agent Console', icon: Terminal, color: 'text-dream-pink' },
+    { name: 'AI Insights', icon: Brain, color: 'text-success' },
+    { name: 'Settings', icon: Settings, color: 'text-mist' }
   ];
 
   // Map search matching
@@ -87,7 +87,7 @@ function OneiroAppContent() {
   }, [searchQuery, dreams]);
 
   return (
-    <div className="min-h-screen bg-[#050508] text-slate-300 flex flex-col font-sans select-none antialiased relative overflow-hidden">
+    <div className="min-h-screen bg-background text-slate-300 flex flex-col font-sans select-none antialiased relative overflow-hidden">
       {/* Background Ambient Glows */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#6366f1]/15 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#a78bfa]/10 rounded-full blur-[150px] pointer-events-none"></div>
@@ -171,7 +171,7 @@ function OneiroAppContent() {
       <div className="flex-1 flex overflow-hidden">
 
         {/* Panel A: Sidebar Navigation Panel */}
-        <nav className={`h-full border-r border-white/5 bg-[#08080c] shrink-0 flex flex-col justify-between p-3.5 transition-all duration-300 relative z-30 ${sidebarOpen ? 'w-60 translate-x-0' : 'w-0 -translate-x-full overflow-hidden p-0 border-none'}`}>
+        <nav className={`h-full border-r border-white/5 bg-surface shrink-0 flex flex-col justify-between p-3.5 transition-all duration-300 relative z-30 ${sidebarOpen ? 'w-60 translate-x-0' : 'w-0 -translate-x-full overflow-hidden p-0 border-none'}`}>
           <div className="space-y-1">
             {sidebarItems.map((item) => {
               const isActive = activeTab === item.name;
@@ -249,8 +249,8 @@ function OneiroAppContent() {
 
             {/* Offline sync queue status tracker */}
             {syncQueueLength > 0 && (
-              <div className="p-4 rounded-xl bg-[#f9bd22]/5 border border-[#f9bd22]/15 space-y-2">
-                <div className="flex items-center gap-2 text-xs font-semibold text-[#f9bd22]">
+              <div className="p-4 rounded-xl bg-moon-gold/5 border border-moon-gold/15 space-y-2">
+                <div className="flex items-center gap-2 text-xs font-semibold text-moon-gold">
                   <CloudLightning className="w-4 h-4" />
                   <span>Sync Queue Pending</span>
                 </div>
@@ -259,7 +259,7 @@ function OneiroAppContent() {
                 </p>
                 <button
                   onClick={syncAllPending}
-                  className="w-full py-2 bg-[#f9bd22]/10 hover:bg-[#f9bd22]/20 border border-[#f9bd22]/20 text-[#f9bd22] text-[10px] font-mono rounded-lg transition-colors cursor-pointer"
+                  className="w-full py-2 bg-moon-gold/10 hover:bg-moon-gold/20 border border-moon-gold/20 text-moon-gold text-[10px] font-mono rounded-lg transition-colors cursor-pointer"
                 >
                   Force Ingest Now
                 </button>
@@ -311,7 +311,7 @@ function OneiroAppContent() {
           <div className="glass-panel max-w-xl w-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative">
             <div className="p-4 border-b border-white/5 flex items-center justify-between bg-white/[0.01]">
               <div className="flex items-center gap-2 flex-1">
-                <Search className="w-4 h-4 text-[#ccc3d8]/60" />
+                <Search className="w-4 h-4 text-mist/60" />
                 <input
                   type="text"
                   value={searchQuery}
@@ -345,15 +345,15 @@ function OneiroAppContent() {
                   >
                     <div>
                       <h4 className="text-xs font-semibold text-white">{d.title}</h4>
-                      <p className="text-[10px] text-[#ccc3d8]/40 font-mono mt-0.5">{d.date} • {d.mood}</p>
+                      <p className="text-[10px] text-mist/40 font-mono mt-0.5">{d.date} • {d.mood}</p>
                     </div>
                     <ChevronRight className="w-4 h-4 text-white/20" />
                   </div>
                 ))
               ) : searchQuery ? (
-                <div className="text-center py-12 text-[#ccc3d8]/30 text-xs">No matching subconscious entities found.</div>
+                <div className="text-center py-12 text-mist/30 text-xs">No matching subconscious entities found.</div>
               ) : (
-                <div className="text-center py-12 text-[#ccc3d8]/30 text-xs">Type to initiate searching...</div>
+                <div className="text-center py-12 text-mist/30 text-xs">Type to initiate searching...</div>
               )}
             </div>
           </div>
@@ -365,17 +365,17 @@ function OneiroAppContent() {
         <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4">
           <div className="glass-panel max-w-3xl w-full rounded-2xl overflow-hidden relative border border-white/10 glow-violet flex flex-col md:flex-row h-[90vh] md:h-[500px]">
             <div className="flex-1 bg-black relative">
-              <GenerativeVisualizer seed={selectedArtworkDream.artworkSeed} mood={selectedArtworkDream.mood} />
+              <GenerativeVisualizer seed={selectedArtworkDream.artworkSeed} mood={selectedArtworkDream.mood} sketchCode={selectedArtworkDream.generatedSketchCode} />
             </div>
-            <div className="w-full md:w-80 border-l border-white/5 bg-[#131315]/95 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar">
+            <div className="w-full md:w-80 border-l border-white/5 bg-surface/95 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar">
               <div className="space-y-6">
                 <div>
-                  <span className="font-mono text-[9px] text-[#22d3ee] tracking-widest uppercase">GENERATIVE INTERCEPT</span>
+                  <span className="font-mono text-[9px] text-aurora-cyan tracking-widest uppercase">GENERATIVE INTERCEPT</span>
                   <h3 className="font-display text-xl font-bold text-white mt-1">{selectedArtworkDream.title}</h3>
                 </div>
                 <div className="space-y-2">
-                  <span className="text-[10px] font-mono text-[#ccc3d8]/40 block">INTERPRETATION SUMMARY</span>
-                  <p className="text-xs text-[#ccc3d8]/85 leading-relaxed bg-black/30 p-3.5 rounded-lg border border-white/5 italic">
+                  <span className="text-[10px] font-mono text-mist/40 block">INTERPRETATION SUMMARY</span>
+                  <p className="text-xs text-mist/85 leading-relaxed bg-black/30 p-3.5 rounded-lg border border-white/5 italic">
                     &quot;{selectedArtworkDream.summary}&quot;
                   </p>
                 </div>

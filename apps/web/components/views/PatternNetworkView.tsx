@@ -300,7 +300,7 @@ export function PatternNetworkView() {
         <h2 className="font-display text-3xl font-bold text-white flex items-center gap-2">
           <span>Pattern Relationship Network</span>
         </h2>
-        <p className="text-[#ccc3d8]/60 text-sm max-w-xl">
+        <p className="text-mist/60 text-sm max-w-xl">
           A multidimensional vector graph mapping co-occurrences of recurring symbols, mood archetypes, and logged dreams.
         </p>
       </div>
@@ -310,23 +310,23 @@ export function PatternNetworkView() {
         
         {/* Interactive Canvas Graph */}
         <div className="lg:col-span-8 glass-panel rounded-2xl overflow-hidden relative flex flex-col min-h-[500px]">
-          <div className="px-5 py-3 border-b border-white/5 flex justify-between items-center bg-[#131315]/40 backdrop-blur-xl">
+          <div className="px-5 py-3 border-b border-white/5 flex justify-between items-center bg-surface/40 backdrop-blur-xl">
             <span className="font-mono text-xs text-white uppercase tracking-widest flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#22d3ee] animate-ping" />
+              <span className="w-1.5 h-1.5 rounded-full bg-aurora-cyan animate-ping" />
               Interactive Subconscious Starfield
             </span>
-            <div className="flex gap-2 text-[10px] font-mono text-[#ccc3d8]/50">
-              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[#7c3aed]"></span>Dream</span>
-              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[#22d3ee]"></span>Symbol</span>
-              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[#f9bd22]"></span>Archetype</span>
+            <div className="flex gap-2 text-[10px] font-mono text-mist/50">
+              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-primary"></span>Dream</span>
+              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-aurora-cyan"></span>Symbol</span>
+              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-moon-gold"></span>Archetype</span>
             </div>
           </div>
-          <div className="flex-1 bg-[#09090b] relative">
+          <div className="flex-1 bg-background relative">
             <canvas ref={canvasRef} className="w-full h-full block absolute inset-0 cursor-crosshair" />
             
             {/* Top controls info overlay */}
             <div className="absolute bottom-4 left-4 flex gap-2">
-              <div className="bg-[#131315]/80 text-[#ccc3d8]/80 px-3 py-1.5 rounded-lg border border-white/5 font-mono text-[9px] backdrop-blur-md">
+              <div className="bg-surface/80 text-mist/80 px-3 py-1.5 rounded-lg border border-white/5 font-mono text-[9px] backdrop-blur-md">
                 🎯 Click individual stars to inspect nodes
               </div>
             </div>
@@ -338,9 +338,9 @@ export function PatternNetworkView() {
           {selectedNode ? (
             <div className="space-y-6">
               <div className="border-b border-white/5 pb-3">
-                <span className="font-mono text-[9px] text-[#22d3ee] tracking-widest uppercase">NODE INSPECTOR DETAILED</span>
+                <span className="font-mono text-[9px] text-aurora-cyan tracking-widest uppercase">NODE INSPECTOR DETAILED</span>
                 <h3 className="font-display text-2xl font-bold text-white mt-1">{selectedNode.label}</h3>
-                <span className={`text-[9px] font-mono px-2 py-0.5 rounded-full border border-current mt-2 inline-block ${selectedNode.type === 'dream' ? 'text-[#7c3aed]' : selectedNode.type === 'symbol' ? 'text-[#22d3ee]' : 'text-[#f9bd22]'}`}>
+                <span className={`text-[9px] font-mono px-2 py-0.5 rounded-full border border-current mt-2 inline-block ${selectedNode.type === 'dream' ? 'text-primary' : selectedNode.type === 'symbol' ? 'text-aurora-cyan' : 'text-moon-gold'}`}>
                   {selectedNode.type.toUpperCase()}
                 </span>
               </div>
@@ -348,13 +348,13 @@ export function PatternNetworkView() {
               {selectedNode.type === 'dream' && selectedNode.originalData && (
                 <div className="space-y-4">
                   <div>
-                    <span className="text-[10px] font-mono text-[#ccc3d8]/40 block">DREAM SUMMARY</span>
-                    <p className="text-xs text-[#ccc3d8]/80 leading-relaxed bg-white/[0.01] p-3 rounded-lg border border-white/5 mt-1">
+                    <span className="text-[10px] font-mono text-mist/40 block">DREAM SUMMARY</span>
+                    <p className="text-xs text-mist/80 leading-relaxed bg-white/[0.01] p-3 rounded-lg border border-white/5 mt-1">
                       {selectedNode.originalData.summary}
                     </p>
                   </div>
                   <div>
-                    <span className="text-[10px] font-mono text-[#ccc3d8]/40 block">DOMINANT EMOTION</span>
+                    <span className="text-[10px] font-mono text-mist/40 block">DOMINANT EMOTION</span>
                     <p className="text-xs font-semibold text-white mt-1">{selectedNode.originalData.dominantEmotion}</p>
                   </div>
                 </div>
@@ -363,14 +363,14 @@ export function PatternNetworkView() {
               {selectedNode.type === 'symbol' && selectedNode.originalData && (
                 <div className="space-y-4">
                   <div>
-                    <span className="text-[10px] font-mono text-[#ccc3d8]/40 block">SYMBOL INTERPRETATION</span>
-                    <p className="text-xs text-[#ccc3d8]/80 leading-relaxed bg-white/[0.01] p-3 rounded-lg border border-white/5 mt-1">
+                    <span className="text-[10px] font-mono text-mist/40 block">SYMBOL INTERPRETATION</span>
+                    <p className="text-xs text-mist/80 leading-relaxed bg-white/[0.01] p-3 rounded-lg border border-white/5 mt-1">
                       {selectedNode.originalData.description}
                     </p>
                   </div>
                   <div>
-                    <span className="text-[10px] font-mono text-[#ccc3d8]/40 block">FREQUENCY SCORE</span>
-                    <p className="text-xs font-semibold text-[#22d3ee] mt-1">{selectedNode.originalData.frequency || 82}%</p>
+                    <span className="text-[10px] font-mono text-mist/40 block">FREQUENCY SCORE</span>
+                    <p className="text-xs font-semibold text-aurora-cyan mt-1">{selectedNode.originalData.frequency || 82}%</p>
                   </div>
                 </div>
               )}
@@ -378,14 +378,14 @@ export function PatternNetworkView() {
               {selectedNode.type === 'archetype' && selectedNode.originalData && (
                 <div className="space-y-4">
                   <div>
-                    <span className="text-[10px] font-mono text-[#ccc3d8]/40 block">ARCHETYPE BEHAVIOR</span>
-                    <p className="text-xs text-[#ccc3d8]/80 leading-relaxed bg-white/[0.01] p-3 rounded-lg border border-white/5 mt-1">
+                    <span className="text-[10px] font-mono text-mist/40 block">ARCHETYPE BEHAVIOR</span>
+                    <p className="text-xs text-mist/80 leading-relaxed bg-white/[0.01] p-3 rounded-lg border border-white/5 mt-1">
                       {selectedNode.originalData.description}
                     </p>
                   </div>
                   <div>
-                    <span className="text-[10px] font-mono text-[#ccc3d8]/40 block">ACTIVATION LEVEL</span>
-                    <p className="text-xs font-semibold text-[#f9bd22] mt-1">{selectedNode.originalData.score}%</p>
+                    <span className="text-[10px] font-mono text-mist/40 block">ACTIVATION LEVEL</span>
+                    <p className="text-xs font-semibold text-moon-gold mt-1">{selectedNode.originalData.score}%</p>
                   </div>
                 </div>
               )}
@@ -394,12 +394,12 @@ export function PatternNetworkView() {
           ) : (
             <div className="text-center py-24 space-y-3 my-auto">
               <HelpCircle className="w-10 h-10 text-white/10 mx-auto" />
-              <p className="text-xs text-[#ccc3d8]/30">No active constellation node selected. Click stars on the left to analyze.</p>
+              <p className="text-xs text-mist/30">No active constellation node selected. Click stars on the left to analyze.</p>
             </div>
           )}
 
-          <div className="border-t border-white/5 pt-4 mt-6 flex items-center gap-2 text-[10px] font-mono text-[#ccc3d8]/40">
-            <Info className="w-4 h-4 text-[#22d3ee]" />
+          <div className="border-t border-white/5 pt-4 mt-6 flex items-center gap-2 text-[10px] font-mono text-mist/40">
+            <Info className="w-4 h-4 text-aurora-cyan" />
             <span>Interactive physics nodes respond to cursor drags.</span>
           </div>
         </div>

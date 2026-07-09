@@ -107,12 +107,12 @@ export function AgentConsoleView() {
       {/* Upper Swarm Controller Header */}
       <div className="glass-panel p-6 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4">
         <div className="space-y-1">
-          <div className="flex items-center gap-2 text-[#ec4899] font-mono text-xs">
+          <div className="flex items-center gap-2 text-dream-pink font-mono text-xs">
             <Server className="w-3.5 h-3.5 animate-pulse" />
             <span>PYTHON BACKEND MULTI-AGENT SWARM ORCHESTRATION</span>
           </div>
           <h2 className="font-display text-2xl font-bold text-white">Agentic Swarm Console</h2>
-          <p className="text-[#ccc3d8]/60 text-xs font-mono">
+          <p className="text-mist/60 text-xs font-mono">
             Orchestrating sub-agents through the Google Agentic Developer Kit (ADK) & Model Context Protocol (MCP).
           </p>
         </div>
@@ -120,7 +120,7 @@ export function AgentConsoleView() {
         <button
           onClick={runSwarmSimulation}
           disabled={swarmState === 'running'}
-          className="flex items-center gap-2 px-5 py-3 rounded-xl bg-[#ec4899] hover:bg-[#db2777] text-white font-semibold text-xs transition-colors shadow-lg shadow-[#ec4899]/20 disabled:opacity-50 cursor-pointer"
+          className="flex items-center gap-2 px-5 py-3 rounded-xl bg-dream-pink hover:bg-[#db2777] text-white font-semibold text-xs transition-colors shadow-lg shadow-dream-pink/20 disabled:opacity-50 cursor-pointer"
         >
           <Play className="w-4 h-4" />
           <span>Execute Full Swarm Pipeline</span>
@@ -134,78 +134,78 @@ export function AgentConsoleView() {
         <div className="lg:col-span-5 glass-panel p-6 rounded-2xl flex flex-col h-full">
           <div className="flex justify-between items-center border-b border-white/5 pb-4 mb-4">
             <span className="font-mono text-xs text-white flex items-center gap-2">
-              <Layers className="w-4 h-4 text-[#ec4899]" />
+              <Layers className="w-4 h-4 text-dream-pink" />
               SWARM PIPELINE MODEL
             </span>
             <div className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-ping" />
-              <span className="text-[10px] font-mono text-[#ccc3d8]/60">Active Swarm</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-success animate-ping" />
+              <span className="text-[10px] font-mono text-mist/60">Active Swarm</span>
             </div>
           </div>
 
           <div className="space-y-4 flex-1 flex flex-col justify-between py-2 relative">
             
             {/* Vector Connector Lines */}
-            <div className="absolute left-[26px] top-6 bottom-6 w-0.5 bg-gradient-to-b from-[#7c3aed] via-[#22d3ee] to-[#ec4899] opacity-30 z-0"></div>
+            <div className="absolute left-[26px] top-6 bottom-6 w-0.5 bg-gradient-to-b from-primary via-aurora-cyan to-dream-pink opacity-30 z-0"></div>
 
             {/* Step 1: Normalizer */}
-            <div className="flex items-center gap-4 relative z-10 bg-[#09090b]/40 p-3 rounded-xl border border-white/5">
-              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-[#7c3aed]">
-                <Activity className="w-5 h-5 text-[#d2bbff]" />
+            <div className="flex items-center gap-4 relative z-10 bg-background/40 p-3 rounded-xl border border-white/5">
+              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-primary">
+                <Activity className="w-5 h-5 text-lilac" />
               </div>
               <div className="flex-1">
                 <div className="flex justify-between text-xs font-mono">
                   <span className="text-white font-semibold">Normalizer Agent</span>
-                  <span className="text-[#22c55e]">Completed</span>
+                  <span className="text-success">Completed</span>
                 </div>
-                <p className="text-[10px] text-[#ccc3d8]/60 font-mono mt-0.5">Ingests dream markdown & logs</p>
+                <p className="text-[10px] text-mist/60 font-mono mt-0.5">Ingests dream markdown & logs</p>
               </div>
             </div>
 
             {/* Step 2: Symbol Extractor */}
-            <div className="flex items-center gap-4 relative z-10 bg-[#09090b]/40 p-3 rounded-xl border border-white/5">
-              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-[#22d3ee]">
-                <Compass className="w-5 h-5 text-[#22d3ee]" />
+            <div className="flex items-center gap-4 relative z-10 bg-background/40 p-3 rounded-xl border border-white/5">
+              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-aurora-cyan">
+                <Compass className="w-5 h-5 text-aurora-cyan" />
               </div>
               <div className="flex-1">
                 <div className="flex justify-between text-xs font-mono">
                   <span className="text-white font-semibold">Symbol Extractor</span>
-                  <span className="text-[#22c55e]">Completed</span>
+                  <span className="text-success">Completed</span>
                 </div>
-                <p className="text-[10px] text-[#ccc3d8]/60 font-mono mt-0.5">Identifies Jungian archetypal keys</p>
+                <p className="text-[10px] text-mist/60 font-mono mt-0.5">Identifies Jungian archetypal keys</p>
               </div>
             </div>
 
             {/* Step 3: Emotion Analyzer */}
-            <div className="flex items-center gap-4 relative z-10 bg-[#09090b]/40 p-3 rounded-xl border border-white/5">
-              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-[#ec4899]">
-                <Heart className="w-5 h-5 text-[#ec4899]" />
+            <div className="flex items-center gap-4 relative z-10 bg-background/40 p-3 rounded-xl border border-white/5">
+              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-dream-pink">
+                <Heart className="w-5 h-5 text-dream-pink" />
               </div>
               <div className="flex-1">
                 <div className="flex justify-between text-xs font-mono">
                   <span className="text-white font-semibold">Emotion Analyst</span>
-                  <span className="text-[#22c55e]">Completed</span>
+                  <span className="text-success">Completed</span>
                 </div>
-                <p className="text-[10px] text-[#ccc3d8]/60 font-mono mt-0.5">Evaluates long-term mood arcs</p>
+                <p className="text-[10px] text-mist/60 font-mono mt-0.5">Evaluates long-term mood arcs</p>
               </div>
             </div>
 
             {/* Step 4: Archetype Detector */}
-            <div className="flex items-center gap-4 relative z-10 bg-[#09090b]/40 p-3 rounded-xl border border-white/5">
-              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-[#f9bd22]">
-                <Eye className="w-5 h-5 text-[#f9bd22]" />
+            <div className="flex items-center gap-4 relative z-10 bg-background/40 p-3 rounded-xl border border-white/5">
+              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-moon-gold">
+                <Eye className="w-5 h-5 text-moon-gold" />
               </div>
               <div className="flex-1">
                 <div className="flex justify-between text-xs font-mono">
                   <span className="text-white font-semibold">Archetype Detector</span>
-                  <span className="text-[#22c55e]">Completed</span>
+                  <span className="text-success">Completed</span>
                 </div>
-                <p className="text-[10px] text-[#ccc3d8]/60 font-mono mt-0.5">Identifies dominant sub-psyche</p>
+                <p className="text-[10px] text-mist/60 font-mono mt-0.5">Identifies dominant sub-psyche</p>
               </div>
             </div>
 
             {/* Step 5: Art Renderer */}
-            <div className="flex items-center gap-4 relative z-10 bg-[#09090b]/40 p-3 rounded-xl border border-white/5">
+            <div className="flex items-center gap-4 relative z-10 bg-background/40 p-3 rounded-xl border border-white/5">
               <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
                 <Cpu className="w-5 h-5 text-white" />
               </div>
@@ -214,7 +214,7 @@ export function AgentConsoleView() {
                   <span className="text-white font-semibold">Art Renderer</span>
                   <span className="text-white/40">Idle</span>
                 </div>
-                <p className="text-[10px] text-[#ccc3d8]/60 font-mono mt-0.5">Generates procedural Canvas art</p>
+                <p className="text-[10px] text-mist/60 font-mono mt-0.5">Generates procedural Canvas art</p>
               </div>
             </div>
 
@@ -223,15 +223,15 @@ export function AgentConsoleView() {
 
         {/* Real-time terminal logs */}
         <div className="lg:col-span-7 glass-panel rounded-2xl flex flex-col h-full overflow-hidden">
-          <div className="px-5 py-4 border-b border-white/5 flex justify-between items-center bg-[#131315]">
+          <div className="px-5 py-4 border-b border-white/5 flex justify-between items-center bg-surface">
             <span className="font-mono text-xs text-white flex items-center gap-2">
-              <Terminal className="w-4 h-4 text-[#ec4899]" />
+              <Terminal className="w-4 h-4 text-dream-pink" />
               SYSTEM LOG STREAM
             </span>
             <div className="flex gap-2">
               <button
                 onClick={() => setConsoleLogs([])}
-                className="text-[10px] font-mono text-[#ccc3d8]/40 hover:text-white transition-colors"
+                className="text-[10px] font-mono text-mist/40 hover:text-white transition-colors"
               >
                 Clear Log
               </button>
@@ -241,10 +241,10 @@ export function AgentConsoleView() {
           <div className="flex-1 bg-black/90 p-5 font-mono text-[11px] text-[#3af53a] space-y-2.5 h-[400px] overflow-y-auto custom-scrollbar shadow-inner">
             {consoleLogs.map((log, idx) => {
               let style = 'text-[#3af53a]';
-              if (log.includes('[SYSTEM]')) style = 'text-[#d2bbff]';
-              if (log.includes('[AGENT]')) style = 'text-[#22d3ee]';
-              if (log.includes('EMOTION')) style = 'text-[#ec4899]';
-              if (log.includes('SYMBOL')) style = 'text-[#f9bd22]';
+              if (log.includes('[SYSTEM]')) style = 'text-lilac';
+              if (log.includes('[AGENT]')) style = 'text-aurora-cyan';
+              if (log.includes('EMOTION')) style = 'text-dream-pink';
+              if (log.includes('SYMBOL')) style = 'text-moon-gold';
               
               return (
                 <div key={idx} className={`${style} flex gap-2 items-start`}>
@@ -255,9 +255,9 @@ export function AgentConsoleView() {
             })}
           </div>
 
-          <div className="p-4 border-t border-white/5 bg-[#131315]/40 flex justify-between items-center">
-            <span className="font-mono text-[10px] text-[#ccc3d8]/40">ADK STATUS: INTEGRATED</span>
-            <span className="font-mono text-[10px] text-[#ccc3d8]/40">SPEED: 1.42s/sw</span>
+          <div className="p-4 border-t border-white/5 bg-surface/40 flex justify-between items-center">
+            <span className="font-mono text-[10px] text-mist/40">ADK STATUS: INTEGRATED</span>
+            <span className="font-mono text-[10px] text-mist/40">SPEED: 1.42s/sw</span>
           </div>
         </div>
 

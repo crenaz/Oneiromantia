@@ -1,5 +1,13 @@
+import os
 from google.adk.agents.llm_agent import Agent
 from oneiromantia_art_spec import ART_GENERATOR_INSTRUCTION
+
+# Dynamic model selection for local Ollama vs cloud Gemini
+if os.environ.get("USE_OLLAMA") == "true":
+    from google.adk.models.lite_llm import LiteLlm
+    MODEL = LiteLlm(model="ollama_chat/llama3.2:3b")
+else:
+    MODEL = "gemini-2.0-flash"
 
 def make_art_generator() -> Agent:
     """
@@ -9,7 +17,7 @@ def make_art_generator() -> Agent:
     """
     return Agent(
         name="art_generator",
-        model="gemma-4-31b-it",
+        model=MODEL,
         description="Translates a symbol graph into a procedural p5.js sketch.",
         instruction=ART_GENERATOR_INSTRUCTION,
     )

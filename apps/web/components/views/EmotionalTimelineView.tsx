@@ -110,7 +110,7 @@ export function EmotionalTimelineView() {
         <h2 className="font-display text-3xl font-bold text-white flex items-center gap-2">
           <span>Emotional Timeline Analyst</span>
         </h2>
-        <p className="text-[#ccc3d8]/60 text-sm max-w-xl">
+        <p className="text-mist/60 text-sm max-w-xl">
           Track long-term emotional trajectories, circadian mood shifts, and lucidity variables across space.
         </p>
       </div>
@@ -119,18 +119,18 @@ export function EmotionalTimelineView() {
       <div className="glass-panel p-6 rounded-2xl space-y-4">
         <div className="flex justify-between items-center pb-2">
           <span className="font-mono text-xs text-white uppercase tracking-wider flex items-center gap-2">
-            <Activity className="w-4 h-4 text-[#7c3aed]" />
+            <Activity className="w-4 h-4 text-primary" />
             PSYCHO-EMOTIONAL SPECTRUM ARC
           </span>
-          <div className="flex items-center gap-4 text-[10px] font-mono text-[#ccc3d8]/60">
-            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[#7c3aed]"></span>Wonder (90%)</span>
-            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[#22d3ee]"></span>Calm (75%)</span>
+          <div className="flex items-center gap-4 text-[10px] font-mono text-mist/60">
+            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-primary"></span>Wonder (90%)</span>
+            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-aurora-cyan"></span>Calm (75%)</span>
             <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500"></span>Chaos (15%)</span>
           </div>
         </div>
 
         {timelineData.length < 2 ? (
-          <div className="h-64 flex items-center justify-center text-[#ccc3d8]/40 text-sm">
+          <div className="h-64 flex items-center justify-center text-mist/40 text-sm">
             Not enough dream logs chronologically to chart. Write more dreams in the Journal to build a trajectory.
           </div>
         ) : (
@@ -217,30 +217,30 @@ export function EmotionalTimelineView() {
           {activeDream ? (
             <div className="space-y-4">
               <div className="flex justify-between items-center border-b border-white/5 pb-2">
-                <span className="font-mono text-[10px] text-[#22d3ee] tracking-widest uppercase">NODE FOCUS INSPECTOR</span>
-                <span className="font-mono text-[10px] text-[#ccc3d8]/40">{activeDream.date}</span>
+                <span className="font-mono text-[10px] text-aurora-cyan tracking-widest uppercase">NODE FOCUS INSPECTOR</span>
+                <span className="font-mono text-[10px] text-mist/40">{activeDream.date}</span>
               </div>
               <h3 className="font-display text-xl font-bold text-white">{activeDream.title}</h3>
               <div className="flex gap-2">
-                <span className="text-[10px] font-mono bg-[#7c3aed]/10 text-[#d2bbff] border border-[#7c3aed]/20 px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-mono bg-primary/10 text-lilac border border-primary/20 px-2 py-0.5 rounded-full">
                   Mood: {activeDream.mood}
                 </span>
-                <span className="text-[10px] font-mono bg-white/5 text-[#ccc3d8]/80 border border-white/5 px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-mono bg-white/5 text-mist/80 border border-white/5 px-2 py-0.5 rounded-full">
                   Lucidity: {activeDream.lucidity || 'High'}
                 </span>
               </div>
-              <p className="text-[#ccc3d8]/80 text-xs leading-relaxed bg-[#1c1b1d]/40 p-4 rounded-xl border border-white/5 line-clamp-4">
+              <p className="text-mist/80 text-xs leading-relaxed bg-elevated/40 p-4 rounded-xl border border-white/5 line-clamp-4">
                 {activeDream.summary}
               </p>
             </div>
           ) : (
-            <div className="text-center py-12 text-[#ccc3d8]/30 text-xs">
+            <div className="text-center py-12 text-mist/30 text-xs">
               Select a timeline node above.
             </div>
           )}
 
-          <div className="mt-6 flex gap-2 items-center text-[10px] font-mono text-[#ccc3d8]/40 border-t border-white/5 pt-4">
-            <HelpCircle className="w-4 h-4 text-[#7c3aed]" />
+          <div className="mt-6 flex gap-2 items-center text-[10px] font-mono text-mist/40 border-t border-white/5 pt-4">
+            <HelpCircle className="w-4 h-4 text-primary" />
             <span>Hover / tap coordinates on the wave to inspect.</span>
           </div>
         </div>
@@ -249,17 +249,17 @@ export function EmotionalTimelineView() {
         <div className="lg:col-span-7 glass-panel p-6 rounded-2xl flex flex-col justify-between">
           <div className="space-y-1 pb-4 border-b border-white/5">
             <span className="font-mono text-xs text-white uppercase tracking-wider block">Subconscious Heatmap</span>
-            <p className="text-[#ccc3d8]/40 text-[10px] font-mono">12-WEEK PATTERN ANALYSIS MATRIX</p>
+            <p className="text-mist/40 text-[10px] font-mono">12-WEEK PATTERN ANALYSIS MATRIX</p>
           </div>
 
           <div className="py-6 flex justify-center">
             <div className="grid grid-flow-col grid-rows-7 gap-1.5">
               {heatmapDays.map((d, idx) => {
                 let colorClass = 'bg-white/5 border border-white/[0.02]';
-                if (d.intensity === 1) colorClass = 'bg-[#7c3aed]/25 border border-[#7c3aed]/10'; // chaotic/low
-                else if (d.intensity === 2) colorClass = 'bg-[#7c3aed]/50 border border-[#7c3aed]/20';
-                else if (d.intensity === 3) colorClass = 'bg-[#22d3ee]/60 border border-[#22d3ee]/20 glow-cyan';
-                else if (d.intensity === 4) colorClass = 'bg-[#7c3aed] border border-[#d2bbff]/30 glow-violet'; // wonder!
+                if (d.intensity === 1) colorClass = 'bg-primary/25 border border-primary/10'; // chaotic/low
+                else if (d.intensity === 2) colorClass = 'bg-primary/50 border border-primary/20';
+                else if (d.intensity === 3) colorClass = 'bg-aurora-cyan/60 border border-aurora-cyan/20 glow-cyan';
+                else if (d.intensity === 4) colorClass = 'bg-primary border border-lilac/30 glow-violet'; // wonder!
 
                 return (
                   <div
@@ -273,14 +273,14 @@ export function EmotionalTimelineView() {
             </div>
           </div>
 
-          <div className="flex justify-between items-center text-[9px] font-mono text-[#ccc3d8]/40 border-t border-white/5 pt-4">
+          <div className="flex justify-between items-center text-[9px] font-mono text-mist/40 border-t border-white/5 pt-4">
             <span>LESS ACTIVE</span>
             <div className="flex gap-1.5 items-center">
               <span className="w-2.5 h-2.5 rounded bg-white/5 border border-white/10" />
-              <span className="w-2.5 h-2.5 rounded bg-[#7c3aed]/25" />
-              <span className="w-2.5 h-2.5 rounded bg-[#7c3aed]/50" />
-              <span className="w-2.5 h-2.5 rounded bg-[#22d3ee]/60" />
-              <span className="w-2.5 h-2.5 rounded bg-[#7c3aed]" />
+              <span className="w-2.5 h-2.5 rounded bg-primary/25" />
+              <span className="w-2.5 h-2.5 rounded bg-primary/50" />
+              <span className="w-2.5 h-2.5 rounded bg-aurora-cyan/60" />
+              <span className="w-2.5 h-2.5 rounded bg-primary" />
             </div>
             <span>DOMINANT WONDER</span>
           </div>

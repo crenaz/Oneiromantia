@@ -29,7 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className="dark">
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} bg-[#050508] text-slate-300 antialiased custom-scrollbar`}
+        className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} bg-background text-slate-300 antialiased custom-scrollbar`}
         suppressHydrationWarning
       >
         {children}
